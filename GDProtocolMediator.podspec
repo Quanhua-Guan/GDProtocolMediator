@@ -21,16 +21,14 @@ Pod::Spec.new do |s|
   稿定调停家, 模块解耦调用调停者.
                        DESC
 
-  s.homepage         = 'https://github.com/xinmuheart@163.com/GDProtocolMediator'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://git.huanleguang.com/gaodingios/GDProtocolMediator'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'xinmuheart@163.com' => 'yuyuan@meiyaapp.com' }
-  s.source           = { :git => 'https://github.com/xinmuheart@163.com/GDProtocolMediator.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { '宇园' => 'yuyuan@gaoding.com' }
+  s.source           = { :git => 'https://git.huanleguang.com/gaodingios/GDProtocolMediator.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'GDProtocolMediator/Classes/**/*'
+  s.source_files = 'GDProtocolMediator/Classes/**/*.{h,m}'
   
   # s.resource_bundles = {
   #   'GDProtocolMediator' => ['GDProtocolMediator/Assets/*.png']
