@@ -26,57 +26,12 @@
         return nil;
     }
     
-    __block NSObject *target = nil;
-    dispatch_sync(self.synchronizationQueue, ^{
-        target = self.cachedTarget[implementorClassName];
-        if (target == nil) {
-            target = [[class alloc] init];
-            self.cachedTarget[implementorClassName] = target;
-        }
-    });
-    
-    if ([target respondsToSelector:@selector(implementor)]) {
-        return [target performSelector:@selector(implementor)];
+    if ([class respondsToSelector:@selector(implementor)]) {
+        return [class performSelector:@selector(implementor)];
     }
     
     NSAssert(NO, [implementorClassName stringByAppendingString:@" Must Implements selector of +implementor!"]);
     return nil;
 }
-
-/**
- 目标类实例缓存
- */
-+ (NSMutableDictionary *)cachedTarget {
-    static NSMutableDictionary *cache = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cache = [NSMutableDictionary dictionary];
-        // 内存不足时的处理
-        [NSNotificationCenter.defaultCenter addObserverForName:UIApplicationDidReceiveMemoryWarningNotification
-                                                        object:nil
-                                                         queue:nil
-                                                    usingBlock:^(NSNotification * _Nonnull note) {
-                                                        dispatch_async([GDProtocolMediator synchronizationQueue], ^{
-                                                            [[GDProtocolMediator cachedTarget] removeAllObjects];
-                                                        });
-                                                    }];
-    });
-    
-    return cache;
-}
-
-/**
- 同步队列
- */
-+ (dispatch_queue_t)synchronizationQueue {
-    static dispatch_queue_t synchronizationQueue = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *name = [NSString stringWithFormat:@"com.gaoding.gdprotocolmediator.synchronizationqueue-%@", [[NSUUID UUID] UUIDString]];
-        synchronizationQueue = dispatch_queue_create([name cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_SERIAL);
-    });
-    return synchronizationQueue;
-}
-
 
 @end

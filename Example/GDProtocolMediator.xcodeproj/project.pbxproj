@@ -10,8 +10,6 @@
 		0239ACB921FF00060002AE01 /* GDM2.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB421FF00060002AE01 /* GDM2.m */; };
 		0239ACBA21FF00060002AE01 /* GDM1.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB721FF00060002AE01 /* GDM1.m */; };
 		0239ACBC21FF016E0002AE01 /* GDProtocolMediatorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACBB21FF016E0002AE01 /* GDProtocolMediatorSpec.m */; };
-		0239ACBD21FF01790002AE01 /* GDM2.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB421FF00060002AE01 /* GDM2.m */; };
-		0239ACBE21FF017C0002AE01 /* GDM1.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB721FF00060002AE01 /* GDM1.m */; };
 		0DEC34BFF9409291EE6C6A59 /* Pods_GDProtocolMediator_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE68B78D8AB41BB9E0F6809F /* Pods_GDProtocolMediator_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -441,8 +439,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0239ACBC21FF016E0002AE01 /* GDProtocolMediatorSpec.m in Sources */,
-				0239ACBE21FF017C0002AE01 /* GDM1.m in Sources */,
-				0239ACBD21FF01790002AE01 /* GDM2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

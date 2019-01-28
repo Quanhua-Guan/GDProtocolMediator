@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 为了简化[稿定调停家代理]的实现而创建的宏 */
 #define GDProtocolMediatorBegin(_Protocol_)\
-@interface _Protocol_##Mediator : NSObject\
+@interface _Protocol_##Mediator : NSObject<GDProtocolMediatorProtocol>\
 @end\
 @implementation _Protocol_##Mediator\
-- (id)implementor {\
++ (id)implementor {\
     // 请返回协议##Protocol##的协议实现者(类型id)\
 
 #define GDProtocolMediatorEnd }@end\
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return 协议实现者实例
  */
-- (id)implementor;
++ (id)implementor;
 
 @end
 

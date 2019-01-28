@@ -11,14 +11,6 @@
 #import "GDM1.h"
 #import "GDM1Protocol.h"
 
-@interface GDProtocolMediator (test)
-
-+ (NSMutableDictionary *)cachedTarget;
-+ (dispatch_queue_t)synchronizationQueue;
-
-@end
-
-
 SPEC_BEGIN(GDProtocolMediatorSpec)
 
 describe(@"GDProtocolMediator", ^{
@@ -36,8 +28,7 @@ describe(@"GDProtocolMediator", ^{
         NSObject<GDM1Protocol> *imp = (GDM1 *)[GDProtocolMediator implementorOfProtocol:@protocol(GDM1Protocol)];
         
         // should be GDM1 instance
-        [[NSStringFromClass(imp.class) should] equal:@"GDM1"];
-        [[imp should] beKindOfClass:[NSObject class]];
+        [[imp should] beKindOfClass:GDM1.class];
         
         [[[[GDM1 alloc] init] should] beKindOfClass:GDM1.class];
         
@@ -50,26 +41,6 @@ describe(@"GDProtocolMediator", ^{
         
         // imp api userLogined
         [[theValue([imp userLogined]) should] beYes];
-    });
-    
-    it(@"synchronizationQueue", ^{
-        [[[GDProtocolMediator synchronizationQueue] should] beNonNil];
-        [[[GDProtocolMediator synchronizationQueue] should] beIdenticalTo:[GDProtocolMediator synchronizationQueue]];
-    });
-    
-    it(@"cachedTarget", ^{
-        [[[GDProtocolMediator cachedTarget] should] beNonNil];
-        [[[GDProtocolMediator cachedTarget] should] beIdenticalTo:[GDProtocolMediator cachedTarget]];
-        [[GDProtocolMediator cachedTarget] isKindOfClass:NSMutableDictionary.class];
-    });
-    
-    it(@"cache target should be empty after memory warning", ^{
-        NSMutableDictionary *dictionary = @{@"a" : @"b"}.mutableCopy;
-        [[dictionary should] receive:@selector(removeAllObjects)];//1 这两行不能调换位置
-        [GDProtocolMediator stub:@selector(cachedTarget) andReturn:dictionary];//2 这两行不能调换位置, 否则本行验证不通过.
-        
-        [dictionary removeAllObjects];
-        [NSNotificationCenter.defaultCenter postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     });
 });
 

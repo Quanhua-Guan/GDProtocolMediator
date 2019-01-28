@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GDM1 : NSObject <GDM1Protocol>
 
+@property (nonatomic, strong) NSString *name;
+
 - (void)GDM1_doSomething;
 
 @end
