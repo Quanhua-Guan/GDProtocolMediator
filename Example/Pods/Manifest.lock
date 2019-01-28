@@ -1,0 +1,23 @@
+PODS:
+  - GDProtocolMediator (0.1.0)
+  - Kiwi (3.0.0)
+
+DEPENDENCIES:
+  - GDProtocolMediator (from `../`)
+  - Kiwi
+
+SPEC REPOS:
+  https://mirrors.tuna.tsinghua.edu.cn/git/cocoapods/specs.git:
+    - Kiwi
+
+EXTERNAL SOURCES:
+  GDProtocolMediator:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GDProtocolMediator: 426a727590fd6b1b0fa8b36e2c4cef81295c7376
+  Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
+
+PODFILE CHECKSUM: d0fa6dbf9dc676810f7756006bbd1765de87e87d
+
+COCOAPODS: 1.5.3

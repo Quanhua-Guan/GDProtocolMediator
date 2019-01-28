@@ -1,0 +1,22 @@
+{
+  "name": "GDProtocolMediator",
+  "version": "0.1.0",
+  "summary": "A short description of GDProtocolMediator.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/xinmuheart@163.com/GDProtocolMediator",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "xinmuheart@163.com": "yuyuan@meiyaapp.com"
+  },
+  "source": {
+    "git": "https://github.com/xinmuheart@163.com/GDProtocolMediator.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "GDProtocolMediator/Classes/**/*"
+}
