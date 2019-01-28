@@ -7,12 +7,20 @@
 //
 
 #import "GDAppDelegate.h"
+#import "GDM2.h"
 
 @implementation GDAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    // Testing
+    GDM2 *m2 = [[GDM2 alloc] init];
+    [m2 GDM2_DoSomething];
+    
+    
+    
     return YES;
 }
 

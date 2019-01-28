@@ -7,23 +7,20 @@
 //
 
 #import "GDM1.h"
+#import <GDProtocolMediator/GDProtocolMediator.h>
 
-@interface GDM1ProtocolMediator : NSObject
+#pragma mark - GDM1ProtocolMediator (私有)
 
-@end
+GDProtocolMediatorBegin(GDM1Protocol)
+GDM1 *gd1 = [[GDM1 alloc] init];
+return gd1;// 业务模块实现
+GDProtocolMediatorEnd
 
-@implementation GDM1ProtocolMediator
-
-+ (id)implementor {
-    return [[GDM1 alloc] init];// 业务模块实现
-}
-
-@end
-
+#pragma mark - GDM1
 
 @implementation GDM1
 
-- (void)doSomething {
+- (void)GDM1_doSomething {
     
 }
 
@@ -36,10 +33,11 @@
 - (void)updateUserDisplayNameWithScene:(nonnull NSString *)scene logined:(BOOL)logined userDisplayName:(nonnull NSString *)userDisplayName {
     // this is a test method
     NSLog(@"hahahahahaha");
+    [self GDM1_doSomething];// for Testing
 }
 
 - (BOOL)userLogined {
-    return arc4random() % 2 == 0;
+    return YES;
 }
 
 @end

@@ -10,23 +10,45 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** 为了简化[稿定调停家代理]的实现而创建的宏 */
+#define GDProtocolMediatorBegin(_Protocol_)\
+@interface _Protocol_##Mediator : NSObject\
+@end\
+@implementation _Protocol_##Mediator\
+- (id)implementor {\
+    // 请返回协议##Protocol##的协议实现者(类型id)\
+
+#define GDProtocolMediatorEnd }@end\
+
+
+/**
+ 稿定调停家代理
+ 创建协议实现者的中介者需要遵循的协议.
+ 实现该协议的中介者位于提供功能的模块中(可以把它看成稿定调停家的代理).
+ */
 @protocol GDProtocolMediatorProtocol <NSObject>
 
 /**
- 获取实现类
+ 获取协议实现者
 
- @return 实现类
+ @return 协议实现者实例
  */
-+ (id)implementor;
+- (id)implementor;
 
 @end
 
+
+/**
+ 稿定调停家, 基于协议的调停者(中介者), 用于模块间解耦调用.
+ */
 @interface GDProtocolMediator : NSObject
 
 /**
  返回协议的实现者, 一个协议对应一个实现者
  
- 实现者需要实现协议,例如协议A: GDProtocolA, 那么, 实现者模块必须实现类: GDProtocolAMediator, (1). 该类必须遵循协议GDProtocolMediatorProtocol, (2). 该类必须实现方法: +implementor
+ - 实现者需要实现协议,例如协议A: GDProtocolA, 那么, 实现者模块必须实现类: GDProtocolAMediator, (1). 该类必须遵循协议GDProtocolMediatorProtocol, (2). 该类必须实现方法: +implementor
+ - 建议使用宏:GDProtocolMediatorBegin和GDProtocolMediatorEnd
+ 
  代码如下:
  @code
  
