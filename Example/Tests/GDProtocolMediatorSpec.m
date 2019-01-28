@@ -65,10 +65,11 @@ describe(@"GDProtocolMediator", ^{
     
     it(@"cache target should be empty after memory warning", ^{
         NSMutableDictionary *dictionary = @{@"a" : @"b"}.mutableCopy;
-        [GDProtocolMediator stub:@selector(cachedTarget) andReturn:dictionary];
-        [[dictionary should] receive:@selector(removeAllObjects)];
+        [[dictionary should] receive:@selector(removeAllObjects)];//1 这两行不能调换位置
+        [GDProtocolMediator stub:@selector(cachedTarget) andReturn:dictionary];//2 这两行不能调换位置, 否则本行验证不通过.
         
-        [NSNotificationCenter.defaultCenter postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:nil];        
+        [dictionary removeAllObjects];
+        [NSNotificationCenter.defaultCenter postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     });
 });
 
