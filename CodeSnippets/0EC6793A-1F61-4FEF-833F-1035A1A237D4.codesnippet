@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>GDProtocolMediatorCreate</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>#define GDProtocolMediatorCreate GDProtocolMediatorBegin(&lt;#_Protocol_#&gt;)\
+{\
+    return &lt;#theRealProtocolImplementor#&gt;;\
+}\
+GDProtocolMediatorEnd</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>0EC6793A-1F61-4FEF-833F-1035A1A237D4</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Generic</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>GDProtocolMediatorCreate</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>GDProtocolMediatorCreate</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>
