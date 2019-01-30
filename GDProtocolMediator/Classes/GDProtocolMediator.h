@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define GDProtocolMediatorEnd }@end\
 
-
 /**
  稿定调停家代理
  创建协议实现者的中介者需要遵循的协议.
@@ -47,11 +46,14 @@ NS_ASSUME_NONNULL_BEGIN
  返回协议的实现者, 一个协议对应一个实现者
  
  - 实现者需要实现协议,例如协议A: GDProtocolA, 那么, 实现者模块必须实现类: GDProtocolAMediator, (1). 该类必须遵循协议GDProtocolMediatorProtocol, (2). 该类必须实现方法: +implementor
- - 建议使用宏:GDProtocolMediatorBegin和GDProtocolMediatorEnd
  
- 代码如下:
  @code
+ /// 方法1. 建议使用宏:GDProtocolMediatorBegin和GDProtocolMediatorEnd (需要依赖GDProtocolMediator.h)
+ GDProtocolMediatorBegin(GDProtocolA)
+ return theRealProtocolImplementor;//FIXME: 业务模块返回协议GDProtocolA的实现者
+ GDProtocolMediatorEnd
  
+ /// 方法2. 手写(不需要依赖GDProtocolMediator), 代码如下:
  @interface GDProtocolAMediator : NSObject
  
  @end
@@ -59,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  @implementation GDProtocolAMediator
  
  + (id)implementor {
-    return theRealProtocolImplementor;//FIXME: 业务模块实现
+    return theRealProtocolImplementor;//FIXME: 业务模块返回协议GDProtocolA的实现者
  }
  
  @end
