@@ -11,20 +11,10 @@
 
 #pragma mark - GDM1ProtocolMediator (私有)
 
-@interface GDM1ProtocolMediator : NSObject<GDProtocolMediatorProtocol>
-@end
-@implementation GDM1ProtocolMediator
-+ (id)implementor {
-    // 请返回协议##Protocol##的协议实现者(类型id)\
-    
+GDProtocolMediatorBegin(GDM1Protocol)
     GDM1 *gd1 = [[GDM1 alloc] init];
     return gd1;// 业务模块实现
-}@end
-
-
-
-//GDProtocolMediatorBegin()
-//GDProtocolMediatorEnd
+GDProtocolMediatorEnd
 
 #pragma mark - GDM1
 
