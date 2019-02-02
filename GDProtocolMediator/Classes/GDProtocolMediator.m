@@ -18,6 +18,12 @@
     }
     
     NSString *protocolName = NSStringFromProtocol(protocol);
+    NSUInteger _location = [protocolName rangeOfString:@"_"].location;
+    if (_location != NSNotFound ) {
+        // 兼容版本2(完全解耦方案)
+        protocolName = [protocolName substringFromIndex:_location + 1];
+    }
+    
     NSString *implementorClassName = [protocolName stringByAppendingString:@"Mediator"];
     Class class = NSClassFromString(implementorClassName);
     

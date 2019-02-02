@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02172A1422052E640034BB2D /* GDM3.m in Sources */ = {isa = PBXBuildFile; fileRef = 02172A1322052E640034BB2D /* GDM3.m */; };
 		0239ACB921FF00060002AE01 /* GDM2.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB421FF00060002AE01 /* GDM2.m */; };
 		0239ACBA21FF00060002AE01 /* GDM1.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACB721FF00060002AE01 /* GDM1.m */; };
 		0239ACBC21FF016E0002AE01 /* GDProtocolMediatorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 0239ACBB21FF016E0002AE01 /* GDProtocolMediatorSpec.m */; };
@@ -39,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02172A1222052E640034BB2D /* GDM3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDM3.h; sourceTree = "<group>"; };
+		02172A1322052E640034BB2D /* GDM3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GDM3.m; sourceTree = "<group>"; };
+		02172A1522052E960034BB2D /* GDM2_UserInfoProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDM2_UserInfoProtocol.h; sourceTree = "<group>"; };
+		02172A1622052EC50034BB2D /* GDM3_UserInfoProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDM3_UserInfoProtocol.h; sourceTree = "<group>"; };
 		0239ACB221FF00060002AE01 /* GDM1Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDM1Protocol.h; sourceTree = "<group>"; };
 		0239ACB421FF00060002AE01 /* GDM2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDM2.m; sourceTree = "<group>"; };
 		0239ACB521FF00060002AE01 /* GDM2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDM2.h; sourceTree = "<group>"; };
@@ -102,12 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0239ACB121FF00060002AE01 /* ModuleAPIs */ = {
+		02172A1122052E480034BB2D /* Module3 */ = {
 			isa = PBXGroup;
 			children = (
-				0239ACB221FF00060002AE01 /* GDM1Protocol.h */,
+				02172A1222052E640034BB2D /* GDM3.h */,
+				02172A1322052E640034BB2D /* GDM3.m */,
+				02172A1622052EC50034BB2D /* GDM3_UserInfoProtocol.h */,
 			);
-			path = ModuleAPIs;
+			path = Module3;
 			sourceTree = "<group>";
 		};
 		0239ACB321FF00060002AE01 /* Module2 */ = {
@@ -115,6 +122,8 @@
 			children = (
 				0239ACB521FF00060002AE01 /* GDM2.h */,
 				0239ACB421FF00060002AE01 /* GDM2.m */,
+				0239ACB221FF00060002AE01 /* GDM1Protocol.h */,
+				02172A1522052E960034BB2D /* GDM2_UserInfoProtocol.h */,
 			);
 			path = Module2;
 			sourceTree = "<group>";
@@ -172,7 +181,7 @@
 				6003F5A6195388D20070C39A /* GDViewController.m */,
 				0239ACB621FF00060002AE01 /* Module1 */,
 				0239ACB321FF00060002AE01 /* Module2 */,
-				0239ACB121FF00060002AE01 /* ModuleAPIs */,
+				02172A1122052E480034BB2D /* Module3 */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -428,6 +437,7 @@
 			files = (
 				0239ACBA21FF00060002AE01 /* GDM1.m in Sources */,
 				6003F59E195388D20070C39A /* GDAppDelegate.m in Sources */,
+				02172A1422052E640034BB2D /* GDM3.m in Sources */,
 				6003F5A7195388D20070C39A /* GDViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				0239ACB921FF00060002AE01 /* GDM2.m in Sources */,

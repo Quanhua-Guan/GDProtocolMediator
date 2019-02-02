@@ -18,7 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (id)implementor {\
     // 请返回协议##Protocol##的协议实现者(类型id)\
 
-#define GDProtocolMediatorEnd }@end\
+#define GDProtocolMediatorEnd }@end
+#define GDProtocolMediatorMethodEnd }
+#define GDProtocolMediatorClassEnd @end
 
 /**
  稿定调停家代理
