@@ -20,7 +20,10 @@ GDProtocolMediatorEnd
 
 #pragma mark - UserInfoProtocolMediator (私有) /GDM2_UserInfoProtocol(2号代理)/GDM3_UserInfoProtocol(2号代理)
 
-// 调停家 2号代理
+/// 调停家 2号代理
+/// 此处的"UserInfoProtocol"需要手写, 是唯一容易出错的地方!!
+/// 因为没有对UserInfoProtocol进行依赖, 所以Xcode不会有补全提示.
+/// 对应的调用者模块中可能存在协议 GDM1_UserInfoProtocol, GDM2_UserInfoProtocol, GDM3_UserInfoProtocol等等...
 GDProtocolMediatorBegin(UserInfoProtocol)
     return [[self.class alloc] init];// 业务模块实现
 GDProtocolMediatorMethodEnd
