@@ -25,7 +25,7 @@ describe(@"GDProtocolMediator", ^{
          
          */
         
-        NSObject<GDM1Protocol> *imp = (GDM1 *)[GDProtocolMediator implementorOfProtocol:@protocol(GDM1Protocol)];
+        NSObject<GDM1Protocol> *imp = [GDProtocolMediator implementorOfProtocol:@protocol(GDM1Protocol)];
         
         // should be GDM1 instance
         [[imp should] beKindOfClass:GDM1.class];
@@ -41,6 +41,10 @@ describe(@"GDProtocolMediator", ^{
         
         // imp api userLogined
         [[theValue([imp userLogined]) should] beYes];
+    });
+    
+    it(@"v2", ^{
+        
     });
 });
 

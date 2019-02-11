@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GDM1Protocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GDM1 : NSObject <GDM1Protocol>
+@interface GDM1 : NSObject /*<GDM1Protocol> // 不产生依赖, 依然可以实现对应的Protocol */
 
 @property (nonatomic, strong) NSString *name;
 

@@ -1,8 +1,8 @@
 //
-//  GDM2.h
-//  GDMediator_Example
+//  GDM3.h
+//  GDProtocolMediator_Example
 //
-//  Created by Guan on 2019/1/28.
+//  Created by Guan on 2019/2/2.
 //  Copyright © 2019 xinmuheart@163.com. All rights reserved.
 //
 
@@ -10,10 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GDM2 : NSObject
+@interface GDM3 : NSObject
 
-- (void)GDM2_DoSomething;
-- (void)GDM2_DoSomethingVersion2;
+- (void)GDM3_DoSomethingVersion2;
 
 @end
 

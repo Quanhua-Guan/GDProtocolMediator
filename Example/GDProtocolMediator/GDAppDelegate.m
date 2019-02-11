@@ -8,6 +8,7 @@
 
 #import "GDAppDelegate.h"
 #import "GDM2.h"
+#import "GDM3.h"
 
 @implementation GDAppDelegate
 
@@ -15,11 +16,15 @@
 {
     // Override point for customization after application launch.
     
-    // Testing
+    // Testing V1
     GDM2 *m2 = [[GDM2 alloc] init];
     [m2 GDM2_DoSomething];
     
+    [m2 GDM2_DoSomethingVersion2];
     
+    // Testing V2
+    GDM3 *m3 = [[GDM3 alloc] init];
+    [m3 GDM3_DoSomethingVersion2];
     
     return YES;
 }
