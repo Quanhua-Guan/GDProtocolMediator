@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 对应GDM2.m第27行的 UserInfoProtocolMediator.
+/// 对应GDM1.m第27行的 UserInfoProtocolMediator.
 @protocol GDM2_UserInfoProtocol <NSObject>
 
 - (BOOL)userLogined;
