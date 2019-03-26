@@ -1,0 +1,275 @@
+stages:
+  - Prebuild
+  - Build
+  - Test
+  - Check
+  - Document
+  - Deploy
+  - Report
+  - Notify
+  - Cleanup
+
+before_script:
+  - export LC_ALL=en_US.UTF-8
+  - export LANG=en_US.UTF-8  
+  - export PROJ_NAME=$(pwd | rev | awk -F \/ '{print $1}' | rev) #请保证项目名称和目录名称一致
+  - export PROJ_SCHEME=$PROJ_NAME"-Example"
+  - export PROJ_TEST_SCHEME=$PROJ_NAME"_Tests"
+  - export PROJ_WORKSPACE="Example/"$PROJ_NAME".xcworkspace"
+  - export PROJ_PROJECT="Example/"$PROJ_NAME".xcodeproj"
+  - export CI_OUTPUT_DIR="/Library/WebServer/Documents/CI/"$PROJ_NAME"/"$CI_COMMIT_SHA"/"
+  - export CI_OUTPUT_DIR_UNITTEST_LOG=$CI_OUTPUT_DIR"test.log"
+  - export CI_OUTPUT_DIR_OCLINT=$CI_OUTPUT_DIR"oclint/"
+  - export CI_OUTPUT_OCLINT_RESULT_HTML=$CI_OUTPUT_DIR_OCLINT"oclint_result.html"
+  - export CI_OUTPUT_DIR_UNITTEST=$CI_OUTPUT_DIR"unittest/"
+  - export CI_OUTPUT_DIR_UNITTEST_RESULT_HTML=$CI_OUTPUT_DIR_UNITTEST"index.html"
+  - export CI_OUTPUT_DIR_INFER=$CI_OUTPUT_DIR"infer/"
+  - mkdir -p $CI_OUTPUT_DIR
+  - mkdir -p $CI_OUTPUT_DIR_OCLINT
+  - mkdir -p $CI_OUTPUT_DIR_UNITTEST
+  - mkdir -p $CI_OUTPUT_DIR_INFER
+  - export XCODEBUILD_LOG=$CI_OUTPUT_DIR"xcodebuild.log"
+  - export COMPILE_COMMANDS_JSON=$CI_OUTPUT_DIR"compile_commands.json"
+  - export CI_OUTPUT_SERVER_LOCATION="http://172.16.2.101/CI/"$PROJ_NAME"/"$CI_COMMIT_SHA"/"
+  - export CI_OUTPUT_SERVER_LOCATION_OCLINT=$CI_OUTPUT_SERVER_LOCATION"oclint/"
+  - export CI_OUTPUT_SERVER_LOCATION_OCLINT_RESULT_HTML=$CI_OUTPUT_SERVER_LOCATION_OCLINT"oclint_result.html"
+  - export CI_OUTPUT_SERVER_LOCATION_UNITTEST=$CI_OUTPUT_SERVER_LOCATION"unittest/"
+  - export CI_OUTPUT_SERVER_LOCATION_UNITTEST_RESULT_HTML=$CI_OUTPUT_SERVER_LOCATION_UNITTEST"index.html"
+  - export CI_OUTPUT_SERVER_LOCATION_INFER=$CI_OUTPUT_SERVER_LOCATION"infer/"
+  - export CI_OUTPUT_SERVER_LOCATION_INFER_RESULT_TXT=$CI_OUTPUT_SERVER_LOCATION_INFER"bugs.txt"
+  - export DERIVED_DATA_PATH=$HOME"/git-runner/DerivedData/"$PROJ_NAME"/"$CI_COMMIT_SHA"/"
+  - mkdir -p $DERIVED_DATA_PATH
+  - echo "prepare..."
+  - if [ ! -d "../GDProtocols/" ]; then cd ../ ; git clone https://git.huanleguang.com/gaodingmoduleios/GDProtocols.git; cd - ; fi
+  - if [ ! -d "../GDMModel/" ]; then cd ../ ; git clone https://git.huanleguang.com/gaodingmoduleios/GDMModel.git; cd - ; fi
+  - cd ../GDProtocols/ ; git checkout master ; git pull ; cd -
+  - cd ../GDMModel/ ; git checkout master ; git pull ; cd -
+ 
+#检查环境
+clean_before_start:
+  stage: Prebuild
+  script:
+    - echo "clean..."
+    - xcodebuild clean -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_SCHEME
+    - xcodebuild clean -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_TEST_SCHEME
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+ 
+#编译 
+build_develop_debug:
+  stage: Build
+  script:
+    - echo "build_develop_debug start..."
+    - xcodebuild build COMPILER_INDEX_STORE_ENABLE=NO -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_SCHEME -destination 'platform=iOS Simulator,name=iPhone XS,OS=12.1' | tee $XCODEBUILD_LOG > /dev/null
+    - xcpretty -r json-compilation-database -o $COMPILE_COMMANDS_JSON < $XCODEBUILD_LOG > /dev/null
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+
+#单元测试  
+unit_test:
+  stage: Test
+  script:
+    - echo "unit_testing start..."
+    - xcodebuild test -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_TEST_SCHEME -destination 'platform=iOS Simulator,name=iPhone XS,OS=12.1' | xcpretty -s | tee $CI_OUTPUT_DIR_UNITTEST_LOG
+    # - xcrun xccov view --only-targets ../CI/GDMHome/DerivedData/Logs/Test/*.xccovreport | tee ../CI/GDMHome/oclint/test_cov.log
+    - fastlane code_coverage scheme:$PROJ_SCHEME workspace:$PROJ_WORKSPACE proj:$PROJ_PROJECT output_directory:$CI_OUTPUT_DIR_UNITTEST build_directory:$DERIVED_DATA_PATH
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+ 
+#自动化检查     
+oclint:
+  stage: Check
+  script:
+    - echo "oclint start..."
+    - cp $COMPILE_COMMANDS_JSON ./
+    - oclint-json-compilation-database -e Pods -- -report-type html -o $CI_OUTPUT_OCLINT_RESULT_HTML -rc LONG_LINE=200 -max-priority-1=100000 -max-priority-2=100000 -max-priority-3=100000
+    - echo $CI_OUTPUT_SERVER_LOCATION_UNITTEST_RESULT_HTML
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+     
+infer:
+  stage: Check
+  script:
+    - echo "infer start..."
+    - cp $COMPILE_COMMANDS_JSON ./
+    - infer run --skip-analysis-in-path Pods --skip-analysis-in-path Example --skip-analysis-in-path ../ --compilation-database-escaped $COMPILE_COMMANDS_JSON --html -o $CI_OUTPUT_DIR_INFER
+    - echo $CI_OUTPUT_SERVER_LOCATION_INFER_RESULT_TXT
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+
+fireline:
+  stage: Check
+  script:
+    - echo "fireline start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+ 
+ 
+findbugs:
+  stage: Check
+  script:
+    - echo "findbugs start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+     
+sonar:
+  stage: Check
+  script:
+    - echo "sonar start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+     
+uiauto:
+  stage: Check
+  script:
+    - echo "uiauto start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+     
+#文档生成
+gendoc:
+  stage: Document
+  script:
+    - echo "javadoc start..."
+  only:
+    - develop
+  tags:
+    - gaoding_module_ios
+     
+change_log:
+  stage: Document
+  script:
+    - echo "change_log start..."
+  only:
+    - master
+  tags:
+    - gaoding_module_ios
+  
+#打包发布  
+deploy_debug:
+  stage: Deploy
+  script:
+    - echo "deploy_debug start..."
+  only:
+    - master
+  tags:
+    - gaoding_module_ios
+    
+#发布报告
+upload_report:
+  stage: Report
+  script:
+    - echo "upload_report start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+ 
+#消息通知和展示
+dingding:
+  stage: Notify
+  script:
+    - echo "dingding start..."
+    - test_pass_rate=$(grep Executed $CI_OUTPUT_DIR_UNITTEST_LOG)
+    - test_code_cover_rate=$(cat $CI_OUTPUT_DIR_UNITTEST_RESULT_HTML | grep 'Total Coverage' | sed 's/.*"total_coverage">\([0-9]*\.[0-9]*%\).*/\1/g')
+    - message="CI报告👊\n模块:"$PROJ_NAME"\n提交:"$CI_COMMIT_TITLE"\n单元测试:"$test_pass_rate"\n测试覆盖率:"$test_code_cover_rate"\n详细覆盖率:"$CI_OUTPUT_SERVER_LOCATION_UNITTEST_RESULT_HTML"\nOCLint检测报告:"$CI_OUTPUT_SERVER_LOCATION_OCLINT_RESULT_HTML"\nInfer检测报告:"$CI_OUTPUT_SERVER_LOCATION_INFER_RESULT_TXT
+    - data_json='{"msgtype":"text","text":{"content":"'$message'"}}'
+    - echo $data_json | tee data_json.txt
+    - curl -H "Content-type:application/json" -X POST --data-binary @data_json.txt https://oapi.dingtalk.com/robot/send?access_token=caed6e6b76ebd029902190dce73a17ab51ee30d03cdc39da463ae2b40005e7a4
+    - rm data_json.txt
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
+
+ 
+robot:
+  stage: Notify
+  script:
+    - echo "review robot start..."
+    - if [ -n "${CODEREVIEW_BOT_TRIGGER}" ]; then
+    - echo 'test ...'
+    # Send test report (support markdown format)
+    - test_pass_rate=$(grep Executed $CI_OUTPUT_DIR_UNITTEST_LOG)
+    - test_code_cover_rate=$(cat $CI_OUTPUT_DIR_UNITTEST_RESULT_HTML | grep 'Total Coverage' | sed 's/.*"total_coverage">\([0-9]*\.[0-9]*%\).*/\1/g')
+    - message="\n\n统计项|统计结果\n---|---\n单元测试|"$test_pass_rate"\n测试覆盖率|"$test_code_cover_rate"[查看]("$CI_OUTPUT_SERVER_LOCATION_UNITTEST_RESULT_HTML")\nOCLint检测报告|[查看]("$CI_OUTPUT_SERVER_LOCATION_OCLINT_RESULT_HTML")\nInfer检测报告|[查看]("$CI_OUTPUT_SERVER_LOCATION_INFER_RESULT_TXT")\n\n"
+    - echo $message
+    - reviewbot_data_json='{"body":"'$message'"}'
+    - echo $reviewbot_data_json | tee reviewbot_data_json.txt
+    - curl -H "Content-Type:application/json" -X POST --data-binary @reviewbot_data_json.txt ${CODEREVIEW_BOT_NOTE}
+    - rm reviewbot_data_json.txt
+    - fi
+  tags:
+    - gaoding_module_ios
+ 
+     
+clean:
+  stage: Cleanup
+  script:
+    - echo "clean start..."
+  only:
+    - develop
+    - master
+    - /^release*$/
+    - merge_requests
+  tags:
+    - gaoding_module_ios
