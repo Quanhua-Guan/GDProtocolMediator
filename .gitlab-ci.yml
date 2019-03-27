@@ -66,7 +66,7 @@ build_develop_debug:
   stage: Build
   script:
     - echo "build_develop_debug start..."
-    - xcodebuild build COMPILER_INDEX_STORE_ENABLE=NO -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_SCHEME -destination 'platform=iOS Simulator,name=iPhone XS,OS=12.1' | tee $XCODEBUILD_LOG > /dev/null
+    - xcodebuild build COMPILER_INDEX_STORE_ENABLE=NO -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_SCHEME -destination 'platform=iOS Simulator,name=iPhone Xs-CI' | tee $XCODEBUILD_LOG > /dev/null
     - xcpretty -r json-compilation-database -o $COMPILE_COMMANDS_JSON < $XCODEBUILD_LOG > /dev/null
   only:
     - develop
@@ -82,7 +82,7 @@ unit_test:
   stage: Test
   script:
     - echo "unit_testing start..."
-    - xcodebuild test -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_TEST_SCHEME -destination 'platform=iOS Simulator,name=iPhone XS,OS=12.1' | xcpretty -s | tee $CI_OUTPUT_DIR_UNITTEST_LOG
+    - xcodebuild test -allowProvisioningUpdates -derivedDataPath $DERIVED_DATA_PATH -workspace $PROJ_WORKSPACE -scheme $PROJ_TEST_SCHEME -destination 'platform=iOS Simulator,name=iPhone Xs-CI' | xcpretty -s | tee $CI_OUTPUT_DIR_UNITTEST_LOG
     # - xcrun xccov view --only-targets ../CI/GDMHome/DerivedData/Logs/Test/*.xccovreport | tee ../CI/GDMHome/oclint/test_cov.log
     - fastlane code_coverage scheme:$PROJ_SCHEME workspace:$PROJ_WORKSPACE proj:$PROJ_PROJECT output_directory:$CI_OUTPUT_DIR_UNITTEST build_directory:$DERIVED_DATA_PATH
   only:
