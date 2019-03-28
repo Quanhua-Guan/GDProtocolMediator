@@ -40,10 +40,10 @@ before_script:
   - export DERIVED_DATA_PATH=$HOME"/git-runner/DerivedData/"$PROJ_NAME"/"$CI_COMMIT_SHA"/"
   - mkdir -p $DERIVED_DATA_PATH
   - echo "prepare..."
-  - if [ ! -d "../GDProtocols/" ]; then cd ../ ; git clone https://git.huanleguang.com/gaodingmoduleios/GDProtocols.git; cd - ; fi
-  - if [ ! -d "../GDMModel/" ]; then cd ../ ; git clone https://git.huanleguang.com/gaodingmoduleios/GDMModel.git; cd - ; fi
-  - cd ../GDProtocols/ ; git checkout master ; git pull ; cd -
-  - cd ../GDMModel/ ; git checkout master ; git pull ; cd -
+  - if [[ $"PROJ_NAME" = *GDM* ]] && [ $"PROJ_NAME" != "GDModel" ]; then if [ ! -d "../GDProtocols/" ]; then cd ../ ; git clone git@git.huanleguang.com:gaodingmoduleios/GDProtocols.git; cd - ; fi fi
+  - if [[ $"PROJ_NAME" = *GDM* ]] && [ $"PROJ_NAME" != "GDModel" ]; then if [ ! -d "../GDMModel/" ]; then cd ../ ; git clone git@git.huanleguang.com:gaodingmoduleios/GDMModel.git; cd - ; fi fi
+  - if [[ $"PROJ_NAME" = *GDM* ]] && [ $"PROJ_NAME" != "GDModel" ]; then cd ../GDProtocols/ ; git checkout master ; git pull ; cd - ; fi
+  - if [[ $"PROJ_NAME" = *GDM* ]] && [ $"PROJ_NAME" != "GDModel" ]; then cd ../GDMModel/ ; git checkout master ; git pull ; cd - ; fi
  
 #检查环境
 clean_before_start:
@@ -116,7 +116,7 @@ infer:
   script:
     - echo "infer start..."
     - cp $COMPILE_COMMANDS_JSON ./
-    - infer run --skip-analysis-in-path Pods --skip-analysis-in-path Example --skip-analysis-in-path ../ --compilation-database-escaped $COMPILE_COMMANDS_JSON --html -o $CI_OUTPUT_DIR_INFER
+    - infer run --skip-analysis-in-path Pods --skip-analysis-in-path Example --skip-analysis-in-path ../ --compilation-database-escaped $COMPILE_COMMANDS_JSON --keep-going --html -o $CI_OUTPUT_DIR_INFER
     - echo $CI_OUTPUT_SERVER_LOCATION_INFER_RESULT_TXT
   only:
     - develop
